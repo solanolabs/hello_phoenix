@@ -31,3 +31,4 @@ cache:
     - node_modules
     - HOME/.mix
     - deps
+    - HOME/usercache

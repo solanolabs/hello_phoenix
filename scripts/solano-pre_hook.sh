@@ -24,9 +24,12 @@ else
   ELIXIR_VER=0
 fi
 if [ "$ELIXIR_VER" != "1.3.2" ]; then
-  sudo apt-get -y install elixir=1.3.2-1
+  if [ ! -f ~/usercache/elixir-1.3.2.zip ]; then
+    mkdir -p ~/usercache
+    curl -L -o ~/usercache/elixir-1.3.2.zip https://github.com/elixir-lang/elixir/releases/download/v1.3.2/Precompiled.zip
+  fi
+  (cd ~/usercache && unzip elixir-1.3.2.zip && rsync -av bin ~/ && rsync -av lib ~/)
 fi
-ln -f -s /usr/lib/elixir/bin/mix $HOME/bin/
 
 # Install/update other dependencies
 mix local.hex --force
