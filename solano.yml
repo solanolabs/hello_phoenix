@@ -1,0 +1,33 @@
+# Example of building Phoenix/Elixir project on Solano CI
+# The pre_setup script may require sudo access. Contact support@solanolabs.com to enable sudo.
+
+# Set environment variables: http://docs.solanolabs.com/Setup/setting-environment-variables/
+environment:
+  'MIX_ENV': 'test'
+
+# Build setup hooks: http://docs.solanolabs.com/Setup/setup-hooks/
+hooks:
+  pre_setup: cp config/test-solano.exs config/test.exs && ./scripts/solano-pre_hook.sh
+  worker_setup: mix ecto.create && mix ecto.migrate
+timeout_hook: 900
+
+# Tests to run
+tests:
+  - mix test
+
+# Specify language/service versions
+nodejs:
+  version: '4.1.1'
+postgresql:
+  version: '9.4'
+
+# Cache dependencies for speedier builds: http://docs.solanolabs.com/Setup/caching-dependencies/
+cache:
+  key_paths:
+    - mix.exs
+    - package.json
+    - scripts/solano-pre_hook.sh
+  save_paths:
+    - node_modules
+    - HOME/.mix
+    - deps
